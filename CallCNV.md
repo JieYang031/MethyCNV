@@ -4,6 +4,7 @@ The code and manual used in MethyCNV project
 1. download aligned BAM file from GDC data portal
 2. run CNVnator (v.0.3.3). Only focus on Chr 1-22, exclude Chr X and Y.
 
+'''
 module load cnvnator/0.3.3
 cnvnator  -root $temp_dir/root.file  -genome  $genome_fasta  -unique  -tree $raw_dir/*/*.bam
 
@@ -16,11 +17,12 @@ cnvnator -root $temp_dir/root.file -chrom 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
 cnvnator -root $temp_dir/root.file -chrom 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22  -call 100 |& tee $temp_dir/$sample".calls.txt"
 
 rm $temp_dir/root.file
-
+'''
 
 2. call SNV and indel using GATK best practice. 
 
 The genome was splitted into many intervals to fast the speed.
+'''
 module load gatk/3.7
 java -jar /risapps/rhel7/gatk/3.7/GenomeAnalysisTK.jar \
 -T HaplotypeCaller \
@@ -31,10 +33,11 @@ java -jar /risapps/rhel7/gatk/3.7/GenomeAnalysisTK.jar \
 -L $interval_dir/$list_file \
 --variant_index_type LINEAR \
 --variant_index_parameter 128000 
-
+'''
 Combine the pieces of results
+'''
 java -cp  /risapps/rhel7/gatk/3.7/GenomeAnalysisTK.jar org.broadinstitute.gatk.tools.CatVariants -R  $genome_fasta -V $temp_dir/SNP_dir/$file_name -out  $temp_dir/SNP.raw.vcf
-
+'''
 Create gvcf file based on the raw SNP+indel calls
 java -jar /risapps/rhel7/gatk/3.7/GenomeAnalysisTK.jar \
    -T GenotypeGVCFs  \
