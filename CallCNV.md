@@ -120,15 +120,15 @@ merge ERDS and CNVnator data to erds+. Code adapted from "TCAG-WGS-CNV-workflow/
 ```
 $script_dir/generate_erds+.sh $pipeline_dir $temp_dir/*.erds.vcf  $temp_dir/*.calls.txt  $temp_dir/temp  /risapps/rhel7/python/2.7.13/bin/python2.7
 ```
-filter erds+
+filter erds+ file, keep all duplication detected by ERDS+ to increase sensitivity. Keep only intersected duplicated CNVs by CNVnator and ERDS.
 ```
 python $script_dir/filter_erds+file.py -i $temp_dir/temp/*.erds+.txt -o $temp_dir/temp/$sample".erds+.filtered.txt"
 ```
-overlapping erds+ with the RLCR data set
+overlapping erds+ with the RLCR data set. $RLCR can be full RLCR or non RepeatMasker RLCR (use this to increase sensitivity).
 ```
 python $pipeline_dir/compare_with_RLCR_definition.py  $RLCR   $temp_dir/temp/$sample".erds+.filtered.txt"
 ```
-remove CNVs with >=70% overlapping with RLCRs
+remove CNVs with >=70% overlapping with RLCRs.
 ```
 python $script_dir/filter_erds+.RLCR.py -i  $temp_dir/temp/$sample".erds+.filtered.txt.RLCR"  -o $temp_dir/$sample".erds+.filter.RLCR.filter.txt"
 ```
