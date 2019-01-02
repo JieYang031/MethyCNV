@@ -116,7 +116,7 @@ perl $erds_dir/erds_pipeline.pl -b $raw_dir/*/*.bam -v $temp_dir/recalibrated_ou
 ```
 4. Tune the final CNV calls
 
-merge ERDS and CNVnator data to erds+
+merge ERDS and CNVnator data to erds+. Code adapted from "TCAG-WGS-CNV-workflow/process_cnvs.erds+.sh".
 ```
 $script_dir/generate_erds+.sh $pipeline_dir $temp_dir/*.erds.vcf  $temp_dir/*.calls.txt  $temp_dir/temp  /risapps/rhel7/python/2.7.13/bin/python2.7
 ```
