@@ -132,3 +132,58 @@ remove CNVs with >=70% overlapping with RLCRs.
 ```
 python $script_dir/filter_erds+.RLCR.py -i  $temp_dir/temp/$sample".erds+.filtered.txt.RLCR"  -o $temp_dir/$sample".erds+.filter.RLCR.filter.txt"
 ```
+
+
+
+##How to run each commands.
+0. Download data from the GDC 
+```
+module load python/2.7.13-gdc 
+gdc-client  download -m ./k450_WGS_download_manifest.txt  -t /rsrch3/scratch/radonc-rsrch/jyang32/MethyCNV/token/gdc-user-token.2018-12-17T02_07_53.251Z.txt
+```
+
+1. First run all .sh and .py files in code file
+```
+sh 1_write_setup.sh
+sh 1.5_run_setup.sh
+sh run_setup.sh    # run the setup.sh file in each folder
+
+#sh 7_call_depth.sh
+#sh 2_write_cnvnator.sh
+#sh 3_write_call_snp.sh
+sh section1.sh
+python 3.5_submit_call_snp.py
+
+#sh 4_combine_SNP.sh
+#sh 4.5_genotype.sh 
+#sh 5_recalibration.sh
+#sh 6_call_erds.sh
+sh section2.sh . ##can only be run after the section1 finished
+```
+After that, in the log folder of each file, there exist following:
+```
+submit_call_SNP.sh
+combine_SNP.lsf
+recalibration.lsf
+call_erds.lsf
+call_depth.lsf
+runCNVnator.lsf
+gvcf_genotype.lsf
+SNP_dir
+```
+
+2. Submit jobs in order
+```
+bsub < call_depth.lsf 
+sh submit_call_SNP.sh   ## need finished before next step except the CNVnator calling
+bsub < combine_SNP.lsf  ## need finished before next step
+bsub < gvcf_genotype.lsf  ## need finished before next step
+bsub < recalibration.lsf  ## need finished before next step
+bsub < call_erds.lsf
+```
+
+3. Extract the final results
+
+
+
+
