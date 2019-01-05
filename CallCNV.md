@@ -175,9 +175,10 @@ bsub < section2.sh
 sh section3.sh
 bsub < call_IDAT.lsf
 ```
-5. Then all final data will be in final_dir
-
-
+5. Then all final data will be in final_dir, copy them out
+```
+cp ../By_portionID/*/finaldata/* ./
+```
 
 
 
